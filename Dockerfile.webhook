@@ -1,6 +1,0 @@
-FROM python:3.9-slim
-WORKDIR /app
-COPY telegram_webhook.py .
-RUN pip install flask requests
-EXPOSE 5000
-CMD ["python", "telegram_webhook.py"]

@@ -11,7 +11,7 @@ route:
 receivers:
   - name: 'telegram'
     webhook_configs:
-      - url: 'https://api.telegram.org/bot8003916403:AAGKyTzbDeZLENP55IUje6uNfmacK1FqtdI/sendMessage'
+      - url: 'https://api.telegram.org/bot8003916403:${TELEGRAM_BOT_TOKEN}/sendMessage'
         send_resolved: true
         http_config:
           proxy_url: ''
