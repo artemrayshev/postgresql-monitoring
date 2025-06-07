@@ -1,0 +1,24 @@
+# Logs
+*.log
+logs/
+
+# Data directories  
+prometheus/data/
+grafana/data/
+influxdb/data/
+
+# Config files with secrets
+grafana/grafana.ini
+prometheus/config/prometheus.yml
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Docker volumes
+volumes/
+
+# Environment files
+.env
+docker-compose.override.yml

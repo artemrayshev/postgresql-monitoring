@@ -1,0 +1,49 @@
+groups:
+  - name: postgresql_alerts
+    rules:
+      - alert: PostgreSQLDown
+        expr: pg_up == 0
+        for: 30s  # было 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL instance is down"
+          description: "PostgreSQL on {{ $labels.instance }} has been down for more than 30 seconds"
+
+      - alert: PostgreSQLTooManyConnections
+        expr: pg_stat_activity_count > 80
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "PostgreSQL too many connections"
+          description: "PostgreSQL has {{ $value }} active connections"
+
+  - name: system_alerts
+    rules:
+      - alert: NodeExporterDown
+        expr: up{job="node-exporter"} == 0
+        for: 30s  # было 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node Exporter is down"
+          description: "Node Exporter on {{ $labels.instance }} is down"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 30s  # было 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for 30 seconds on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.9
+        for: 30s  # было 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is above 90% on {{ $labels.instance }}"

@@ -1,0 +1,32 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['192.168.56.10:9100']
+    scrape_interval: 15s
+
+  - job_name: 'postgres-exporter'
+    static_configs:
+      - targets: ['192.168.56.10:9187']
+    scrape_interval: 30s
+remote_write:
+  - url: "http://influxdb:8086/api/v1/prom/write?db=metrics"
+    basic_auth:
+      username: "prometheus"
+      password: "prometheus123" 
